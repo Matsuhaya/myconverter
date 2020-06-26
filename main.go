@@ -9,12 +9,16 @@ import (
 	"path/filepath"
 )
 
-var (
-	iExt = flag.String("i", "jpg", "string_flag")
-	oExt = flag.String("o", "png", "string_flag")
-)
+type ext struct {
+	input  string
+	output string
+}
 
 func main() {
+	var ext ext
+	ext.input = "." + *flag.String("i", "jpg", "string_flag")
+	ext.output = "." + *flag.String("o", "png", "string_flag")
+
 	flag.Parse()
 	dir := flag.Args()
 
@@ -23,10 +27,9 @@ func main() {
 		func(path string, info os.FileInfo, err error) error {
 
 			// iオプションで指定した拡張子のファイルのみ変換処理を実行
-			ext := "." + *iExt
-			if filepath.Ext(path) == ext {
+			if filepath.Ext(path) == ext.input {
 				fmt.Println(path)
-				err := convert.ConvertFile(path, oExt)
+				err := convert.ConvertFile(path, ext.output)
 				assert.Assert(err, "Failed to convert file.")
 			}
 			return nil

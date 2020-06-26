@@ -13,7 +13,7 @@ func getFileNameWithoutExt(path string) string {
 	return filepath.Base(path[:len(path)-len(filepath.Ext(path))])
 }
 
-func ConvertFile(path string, oExt *string) error {
+func ConvertFile(path string, ext string) error {
 
 	// ファイルオープン
 	file, err := os.Open(path)
@@ -25,7 +25,6 @@ func ConvertFile(path string, oExt *string) error {
 	assert.Assert(err, "Failed to decode file")
 
 	// oオプションで指定した拡張子の出力ファイルパス生成
-	ext := "." + *oExt
 	dstPath := filepath.Join(filepath.Dir(path), getFileNameWithoutExt(path)+ext)
 	fmt.Println(dstPath)
 
