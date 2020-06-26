@@ -9,6 +9,11 @@ import (
 	"path/filepath"
 )
 
+var (
+	iExt = flag.String("i", "jpg", "string_flag")
+	oExt = flag.String("o", "png", "string_flag")
+)
+
 // errorオブジェクトをチェックし、nilの場合例外を送出
 func assert(err error, msg string) {
 	if err != nil {
@@ -31,8 +36,9 @@ func convertFile(path string) error {
 	img, _, err := image.Decode(file)
 	assert(err, "Failed to decode file")
 
-	// 出力ファイルの.pngパスを生成
-	dstPath := filepath.Join(filepath.Dir(path), getFileNameWithoutExt(path)+".png")
+	// oオプションで指定した拡張子の出力ファイルパス生成
+	ext := "." + *oExt
+	dstPath := filepath.Join(filepath.Dir(path), getFileNameWithoutExt(path)+ext)
 	fmt.Println(dstPath)
 
 	// 出力ファイルを生成
@@ -53,12 +59,11 @@ func main() {
 	err := filepath.Walk(dir[0],
 		func(path string, info os.FileInfo, err error) error {
 
-			// .jpgのみ変換処理を実行
-			if filepath.Ext(path) == ".jpg" {
-
+			// iオプションで指定した拡張子のファイルのみ変換処理を実行
+			ext := "." + *iExt
+			if filepath.Ext(path) == ext {
 				fmt.Println(path)
 				err := convertFile(path)
-
 				assert(err, "Failed to convert file.")
 			}
 			return nil
