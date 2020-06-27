@@ -1,3 +1,12 @@
+// This is my own extension converter for image file.
+//
+// Features
+//
+// Supports the option to specify the extension.
+// Default is to convert JPG to PNG.
+//
+//  $ go run main.go -i=png -o=jpeg ~/Desktop
+//
 package main
 
 import (
